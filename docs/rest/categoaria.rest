@@ -1,0 +1,29 @@
+GET http://127.0.0.1:8000/api/categoria
+Accept: application/json
+Content-Type: application/json
+
+### crear categoria
+POST http://127.0.0.1:8000/api/categoria
+Accept: application/json
+Content-Type: application/json
+
+{
+    "nombre": "ELECTROADFSDLNF"
+}
+
+### mostrar
+GET http://127.0.0.1:8000/api/categoria/2
+
+### modificar
+PUT http://127.0.0.1:8000/api/categoria/2
+Accept: application/json
+Content-Type: application/json
+
+{
+    "nombre": "MUEBLES DE MADERA",
+    "detalle": "muebles para oficinas"
+}
+
+### eliminar
+
+DELETE http://127.0.0.1:8000/api/categoria/3
