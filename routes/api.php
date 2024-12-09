@@ -34,6 +34,8 @@ Route::prefix('v1/auth')->group(function(){
 
 Route::middleware('auth:sanctum')->group(function(){
 
+    
+    Route::get("categoria-listar", [CategoriaController::class, "listarCategoria"]);
     Route::apiResource("categoria", CategoriaController::class);
     Route::apiResource("producto", ProductoController::class);
     Route::apiResource("cliente", ClienteController::class);

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Categoria;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -10,11 +11,26 @@ class CategoriaController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
+    {
+        $limit = isset($request->limit)?$request->limit:10;
+        $q = $request->q;
+        if($q){
+            $categorias = Categoria::where("nombre", "like", "%$q%")
+                                    ->orWhere("detalle", "like", "%$q%")
+                                    ->orderBy('id', 'desc')
+                                    ->paginate($limit);
+        }else{
+            $categorias =Categoria::orderBy('id', 'desc')->paginate($limit);
+        }
+        return response()->json($categorias,200);
+    }
+    public function listarCategoria()
     {
         $categorias = DB::table("categorias")->get();
         return response()->json($categorias);
     }
+
 
     /**
      * Store a newly created resource in storage.
