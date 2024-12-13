@@ -15,8 +15,8 @@ class EmpleadoController extends Controller
         $limit = isset($request->limit)?$request->limit:10;
         $q = $request->q;
         if($q){
-        $empleados = Empleado::with('usuario')->get()
-        ->orWhere("nombre_completo", "like", "%$q%")
+        $empleados = Empleado::with('usuario')
+        ->Where("nombre_completo", "like", "%$q%")
         ->orWhere("estado", "like", "%$q%")
         ->orWhere("cargo", "like", "%$q%")
         ->orderBy('id', 'desc')
@@ -79,7 +79,7 @@ class EmpleadoController extends Controller
         $empleado = Empleado::findOrFail($id);
         $empleado->delete();
 
-        return response()->json(['message' => 'Empleado eliminado con éxito.']);
+        return response()->json(['message' => 'Empleado eliminado con éxito.'],200);
     }
 
     /**
