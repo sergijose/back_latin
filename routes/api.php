@@ -6,6 +6,7 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CategoriaController;
 use App\Http\Controllers\ClienteController;
 use App\Http\Controllers\DocumentoController;
+use App\Http\Controllers\EmpleadoController;
 use App\Http\Controllers\PedidoController;
 use App\Http\Controllers\PersonaController;
 use App\Http\Controllers\ProductoController;
@@ -41,9 +42,11 @@ Route::middleware('auth:sanctum')->group(function(){
     Route::apiResource("cliente", ClienteController::class);
     Route::apiResource("pedido", PedidoController::class);
     Route::apiResource("usuario", UsuarioController::class);
-    Route::apiResource("pesona", PersonaController::class);
+    Route::apiResource("persona", PersonaController::class);
     Route::apiResource("documento", DocumentoController::class);
     Route::apiResource("role", RoleController::class);
+    Route::apiResource("empleado", EmpleadoController::class);
+    Route::patch('/empleados/{id}/assign-user', [EmpleadoController::class, 'assignUser']);
 
 });
 

@@ -50,6 +50,10 @@ class User extends Authenticatable
     public function persona(){
         return $this->hasOne(Persona::class);
     }
+    public function empleado()
+    {
+        return $this->hasOne(Empleado::class, 'user_id');
+    }
 
     public function roles(){
         return $this->belongsToMany(Role::class);
