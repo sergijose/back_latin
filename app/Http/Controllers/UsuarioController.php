@@ -15,7 +15,7 @@ class UsuarioController extends Controller
     public function index(Request $request)
     {
 
-        $usuarios = User::with(["persona"])->where("name", "LIKE", "%$request->q%")->get();
+        $usuarios = User::with(["empleado"])->where("name", "LIKE", "%$request->q%")->get();
 
         return response()->json($usuarios, 200);
     }

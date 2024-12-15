@@ -12,20 +12,20 @@ class EmpleadoController extends Controller
      */
     public function index(Request $request)
     {
-        $limit = isset($request->limit)?$request->limit:10;
+        $limit = isset($request->limit) ? $request->limit : 10;
         $q = $request->q;
-        if($q){
-        $empleados = Empleado::with('usuario')
-        ->Where("nombre_completo", "like", "%$q%")
-        ->orWhere("estado", "like", "%$q%")
-        ->orWhere("cargo", "like", "%$q%")
-        ->orderBy('id', 'desc')
-        ->paginate($limit);
-    }else{
-        $empleados = Empleado::with(["usuario"])->orderBy('id', 'desc')->paginate($limit);
-    }
+        if ($q) {
+            $empleados = Empleado::with('usuario')
+                ->Where("nombre_completo", "like", "%$q%")
+                ->orWhere("estado", "like", "%$q%")
+                ->orWhere("cargo", "like", "%$q%")
+                ->orderBy('id', 'desc')
+                ->paginate($limit);
+        } else {
+            $empleados = Empleado::with(["usuario"])->orderBy('id', 'desc')->paginate($limit);
+        }
 
-    return response()->json($empleados, 200);
+        return response()->json($empleados, 200);
     }
 
     /**
@@ -46,7 +46,6 @@ class EmpleadoController extends Controller
         $empleado = Empleado::create($validated);
 
         return response()->json(['message' => 'Empleado creado con éxito.', 'empleado' => $empleado], 201);
-      
     }
 
     /**
@@ -79,7 +78,7 @@ class EmpleadoController extends Controller
         $empleado = Empleado::findOrFail($id);
         $empleado->delete();
 
-        return response()->json(['message' => 'Empleado eliminado con éxito.'],200);
+        return response()->json(['message' => 'Empleado eliminado con éxito.'], 200);
     }
 
     /**
@@ -87,15 +86,26 @@ class EmpleadoController extends Controller
      */
     public function assignUser(Request $request, $id)
     {
-        $empleado = Empleado::findOrFail($id);
-
+        // Buscar el empleado por ID, si no existe lanza una excepción
+        $empleado = Empleado::with('usuario')->findOrFail($id);
+        // Validar el campo user_id
         $validated = $request->validate([
             'user_id' => 'required|exists:users,id',
         ]);
 
-        $empleado->user_id = $validated['user_id'];
-        $empleado->save();
+        // Verificar si el usuario ya está asignado a otro empleado
+        $userAlreadyAssigned = Empleado::where('user_id', $validated['user_id'])->where('id', '!=', $id)->exists();
 
-        return response()->json(['message' => 'Usuario asignado al empleado con éxito.', 'empleado' => $empleado]);
+        if ($userAlreadyAssigned) {
+            return response()->json(['message' => 'Este usuario ya está asignado a otro empleado.'], 400);
+        }
+
+        // Asignar el usuario al empleado
+        $empleado->update(['user_id' => $validated['user_id']]);
+
+        return response()->json([
+            'message' => 'Usuario asignado al empleado con éxito.',
+            'empleado' => $empleado->load('usuario') // Cargar la relación con el usuario
+        ], 200);
     }
 }

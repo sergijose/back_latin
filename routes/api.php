@@ -46,7 +46,7 @@ Route::middleware('auth:sanctum')->group(function(){
     Route::apiResource("documento", DocumentoController::class);
     Route::apiResource("role", RoleController::class);
     Route::apiResource("empleado", EmpleadoController::class);
-    Route::patch('/empleados/{id}/assign-user', [EmpleadoController::class, 'assignUser']);
+    Route::put('/empleado/{id}/assign-user', [EmpleadoController::class, 'assignUser']);
 
 });
 
