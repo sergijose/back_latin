@@ -10,6 +10,7 @@ use App\Http\Controllers\EmpleadoController;
 use App\Http\Controllers\PedidoController;
 use App\Http\Controllers\PersonaController;
 use App\Http\Controllers\ProductoController;
+use App\Http\Controllers\ProductoDetalleController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\UsuarioController;
 
@@ -39,6 +40,7 @@ Route::middleware('auth:sanctum')->group(function(){
     Route::get("categoria-listar", [CategoriaController::class, "listarCategoria"]);
     Route::apiResource("categoria", CategoriaController::class);
     Route::apiResource("producto", ProductoController::class);
+    Route::apiResource('producto-detalle', ProductoDetalleController::class);
     Route::apiResource("cliente", ClienteController::class);
     Route::apiResource("pedido", PedidoController::class);
     Route::apiResource("usuario", UsuarioController::class);

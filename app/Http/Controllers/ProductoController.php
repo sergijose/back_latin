@@ -21,6 +21,9 @@ class ProductoController extends Controller
             $productos = Producto::where("nombre", "like", "%$q%")
                 ->orWhere("precio_venta", "like", "%$q%")
                 ->orWhere("tipo", "like", "%$q%")
+                ->orWhereHas("categoria", function ($query) use ($q) {
+                    $query->where("nombre", "like", "%$q%");
+                })
                 ->with(["categoria"])
                 ->orderBy('id', 'desc')
                 ->paginate($limit);
@@ -43,9 +46,9 @@ class ProductoController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            "nombre" => "required|min:3|max:255",
-            "categoria_id" => "required",
-            "imagen" => "nullable|image|mimes:jpg,jpeg,png,webp|max:2048", // Validar imagen
+            "nombre" => "required|min:3|max:255|unique:productos,nombre",
+            "categoria_id" => "required|exists:categorias,id",
+            //"imagen" => "nullable|image|mimes:jpg,jpeg,png,webp|max:2048", // Validar imagen
         ]);
         // subida de imagen
         /*
@@ -108,8 +111,8 @@ class ProductoController extends Controller
     public function update(Request $request, string $id)
     {
         $request->validate([
-            "nombre" => "required|min:3|max:255",
-            "categoria_id" => "required"
+            "nombre" => "required|min:3|max:255|unique:productos,nombre,$id",
+           "categoria_id" => "required|exists:categorias,id",
         ]);
         $producto = Producto::find($id);
         $producto->nombre = $request->nombre;
@@ -153,6 +156,6 @@ class ProductoController extends Controller
     }
         $producto->delete();
 
-        return response()->json(["mensaje" => "Producto Eliminar"], 200);
+        return response()->json(["mensaje" => "Producto Eliminado"], 200);
     }
 }

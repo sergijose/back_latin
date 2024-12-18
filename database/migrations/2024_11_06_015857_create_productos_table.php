@@ -18,8 +18,8 @@ return new class extends Migration
             $table->decimal("precio_compra", 12, 2)->default(0);
             $table->decimal("precio_venta", 12, 2)->default(0);
             $table->string("tipo")->nullable();
-            $table->string("unidad_medida");
-            $table->integer("cantidad_medida")->default(0);
+            $table->string("unidad_medida")->nullable();
+            $table->integer("cantidad_medida")->default(1);
             $table->integer("stock")->default(0);
             $table->string("imagen")->nullable();
 
