@@ -12,6 +12,7 @@ class ProductoDetalle extends Model
     protected $table = 'producto_detalle';
 
     protected $fillable = [
+        'codigo',
         'producto_id',
         'serie',
         'mac',
@@ -20,6 +21,7 @@ class ProductoDetalle extends Model
         'observaciones'
     ];
 
+  
     public function producto()
     {
         return $this->belongsTo(Producto::class);

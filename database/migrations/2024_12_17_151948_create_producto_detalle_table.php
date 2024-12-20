@@ -21,12 +21,12 @@ return new class extends Migration
                 'DISPONIBLE',
                 'PRESTADO',
                 'DEVUELTO',
-                'EN_REVISION'
+                'EN REVISION'
             ])->default('DISPONIBLE');
             $table->enum('estado_fisico', [
                 'OPERATIVO',
                 'DAÑADO',
-                'EN_REPARACIÓN'
+                'EN REPARACION'
             ])->default('OPERATIVO');
             $table->text('observaciones')->nullable();
             $table->timestamps();

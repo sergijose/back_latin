@@ -21,6 +21,7 @@ class ProductoController extends Controller
             $productos = Producto::where("nombre", "like", "%$q%")
                 ->orWhere("precio_venta", "like", "%$q%")
                 ->orWhere("tipo", "like", "%$q%")
+                ->orWhere("unidad_medida", "like", "%$q%")
                 ->orWhereHas("categoria", function ($query) use ($q) {
                     $query->where("nombre", "like", "%$q%");
                 })

@@ -21,4 +21,8 @@ class Producto extends Model
     public function pedidos(){
         return $this->belongsToMany(Pedido::class);
     }
+
+    public function productoDetalle(){
+        return $this->hasMany(ProductoDetalle::class);
+    }
 }
